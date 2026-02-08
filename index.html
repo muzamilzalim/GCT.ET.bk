@@ -3,12 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#020203">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GCT.ET | Neural Electrical Engineering AI</title>
-    <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,39 +19,54 @@
             color: #f8fafc;
             font-family: 'Sora', sans-serif;
             overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
         }
         .font-futuristic {
             font-family: 'Orbitron', sans-serif;
         }
         
-        @keyframes orbital-rotate {
+        @keyframes border-travel {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animated-border {
+            background: linear-gradient(90deg, transparent, var(--theme-color), transparent);
+            background-size: 200% 100%;
+            animation: border-travel 3s linear infinite;
+        }
+
+        @keyframes energy-surge {
+            0% { box-shadow: 0 0 10px var(--theme-color), inset 0 0 5px var(--theme-color); transform: scale(1); }
+            50% { box-shadow: 0 0 30px var(--theme-color), inset 0 0 15px var(--theme-color); transform: scale(1.05); }
+            100% { box-shadow: 0 0 10px var(--theme-color), inset 0 0 5px var(--theme-color); transform: scale(1); }
+        }
+
+        @keyframes orbit-rotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
-        .orbital-loader {
-            width: 24px;
-            height: 24px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-top: 2px solid #000;
-            border-radius: 50%;
-            animation: orbital-rotate 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        .god-button {
+            position: relative;
+            background: var(--theme-color);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: visible !important;
         }
 
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(1000%); }
-        }
-
-        .scanline {
+        .god-button::before {
+            content: '';
             position: absolute;
-            width: 100%;
-            height: 100px;
-            background: linear-gradient(to bottom, transparent, var(--theme-glow), transparent);
-            opacity: 0.05;
-            pointer-events: none;
-            animation: scanline 8s linear infinite;
+            inset: -4px;
+            border: 1px solid var(--theme-color);
+            border-radius: inherit;
+            opacity: 0.3;
+            animation: orbit-rotate 4s linear infinite;
+        }
+
+        .god-button:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 0 40px var(--theme-color);
         }
 
         .bot-message b {
@@ -64,10 +75,11 @@
             display: block;
             margin-bottom: 6px;
             font-size: 1.05em;
+            letter-spacing: 0.02em;
         }
         .bot-message i {
             font-style: italic;
-            opacity: 0.8;
+            opacity: 0.85;
             display: block;
             margin-bottom: 10px;
             border-left: 3px solid var(--theme-color);
@@ -77,18 +89,26 @@
         .bot-message p {
             margin-bottom: 14px;
             line-height: 1.6;
+            font-weight: 300;
         }
 
         .input-container {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .input-container:focus-within {
-            box-shadow: 0 0 40px -10px var(--theme-glow);
-            border-color: var(--theme-color);
+            box-shadow: 0 0 35px -5px var(--theme-glow);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
         }
 
-        ::-webkit-scrollbar { width: 0px; }
+        ::-webkit-scrollbar {
+            width: 2px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--theme-color);
+            opacity: 0.3;
+        }
     </style>
 <script type="importmap">
 {
@@ -102,7 +122,6 @@
 </script>
 </head>
 <body class="h-screen w-screen overflow-hidden">
-    <div class="scanline"></div>
     <div id="root"></div>
 </body>
 </html>
