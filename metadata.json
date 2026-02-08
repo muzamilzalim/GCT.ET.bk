@@ -1,0 +1,8 @@
+{
+  "name": "GCT.ET AI Companion",
+  "description": "A cinematic, futuristic AI chatbot interface featuring neon aesthetics, voice interaction, and advanced Gemini-powered intelligence.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ]
+}
