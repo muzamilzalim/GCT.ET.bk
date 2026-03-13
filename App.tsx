@@ -64,7 +64,7 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className={`flex flex-col h-screen max-w-md mx-auto relative overflow-hidden transition-all duration-700 ${theme === 'dark' ? 'bg-[#010102]' : 'bg-[#fafafa]'}`}
+      className={`flex flex-col h-screen w-full relative overflow-hidden transition-all duration-700 ${theme === 'dark' ? 'bg-[#010102]' : 'bg-[#fafafa]'}`}
       style={{ '--theme-color': activeColor.hex, '--theme-glow': activeColor.shadow } as any}
     >
       
@@ -75,123 +75,131 @@ const App: React.FC = () => {
       </div>
 
       {/* Header */}
-      <header className={`relative z-20 px-6 py-2.5 flex items-center justify-between border-b transition-all duration-500 ${theme === 'dark' ? 'border-white/5 bg-black/60' : 'border-gray-200 bg-white/80'} backdrop-blur-xl`}>
-        <Logo color={primaryColor} />
-        <div className="flex items-center gap-3">
-           <button onClick={() => setShowSettings(true)} className="p-2 transition-all hover:scale-110 active:scale-90" style={{ color: activeColor.hex }}>
-             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" strokeWidth={1.5}/></svg>
-           </button>
-           <button onClick={() => setShowProfileModal(true)} className={`p-0.5 rounded-lg border transition-all hover:bg-white/5`} style={{ borderColor: `${activeColor.hex}33` }}>
-            {profile?.profilePic ? <img src={profile.profilePic} className="w-8 h-8 rounded-md object-cover" /> : <svg className="w-5 h-5" style={{ color: activeColor.hex }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
-           </button>
+      <header className={`relative z-20 w-full border-b transition-all duration-500 ${theme === 'dark' ? 'border-white/5 bg-black/60' : 'border-gray-200 bg-white/80'} backdrop-blur-xl`}>
+        <div className="max-w-3xl mx-auto px-6 py-2.5 flex items-center justify-between">
+          <Logo color={primaryColor} />
+          <div className="flex items-center gap-3">
+             <button onClick={() => setShowSettings(true)} className="p-2 transition-all hover:scale-110 active:scale-90" style={{ color: activeColor.hex }}>
+               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" strokeWidth={1.5}/></svg>
+             </button>
+             <button onClick={() => setShowProfileModal(true)} className={`p-0.5 rounded-lg border transition-all hover:bg-white/5`} style={{ borderColor: `${activeColor.hex}33` }}>
+              {profile?.profilePic ? <img src={profile.profilePic} className="w-8 h-8 rounded-md object-cover" /> : <svg className="w-5 h-5" style={{ color: activeColor.hex }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
+             </button>
+          </div>
         </div>
       </header>
 
       {/* Chat Area */}
-      <main ref={scrollRef} className="flex-1 overflow-y-auto z-10 p-5 space-y-7 scroll-smooth pb-20">
-        {messages.length === 0 && (
-          <div className="py-8 space-y-10 animate-in fade-in slide-in-from-top-4 duration-1000">
-            <div className="text-center space-y-2">
-              <h2 className="font-futuristic text-xl font-bold tracking-[0.5em] uppercase opacity-90" style={{ color: activeColor.hex }}>{t.status}</h2>
-              <div className="flex items-center justify-center gap-4">
-                 <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-white/10"></div>
-                 <p className="text-[9px] uppercase tracking-[0.6em] font-medium opacity-30">{t.subStatus}</p>
-                 <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-white/10"></div>
+      <main ref={scrollRef} className="flex-1 overflow-y-auto z-10 w-full">
+        <div className="max-w-3xl mx-auto p-5 space-y-7 scroll-smooth pb-20">
+          {messages.length === 0 && (
+            <div className="py-8 space-y-10 animate-in fade-in slide-in-from-top-4 duration-1000">
+              <div className="text-center space-y-2">
+                <h2 className="font-futuristic text-xl font-bold tracking-[0.5em] uppercase opacity-90" style={{ color: activeColor.hex }}>{t.status}</h2>
+                <div className="flex items-center justify-center gap-4">
+                   <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-white/10"></div>
+                   <p className="text-[9px] uppercase tracking-[0.6em] font-medium opacity-30">{t.subStatus}</p>
+                   <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-white/10"></div>
+                </div>
               </div>
-            </div>
-            
-            <div className="grid grid-cols-1 gap-3 px-4">
-              {ELECTRICAL_TEMPLATES.map((tmpl, idx) => (
-                <button key={idx} onClick={() => handleSendMessage(tmpl)} className={`text-left p-4 rounded-2xl border transition-all hover:bg-white/5 active:scale-[0.98] group ${theme === 'dark' ? 'bg-white/5 border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
-                  <div className="flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-black shadow-inner" style={{ color: activeColor.hex }}>⚡</div>
-                    <span className="font-medium text-[13px] opacity-70 group-hover:opacity-100 transition-opacity">{tmpl}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {messages.map((msg) => (
-          <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} animate-in fade-in slide-in-from-bottom-2 duration-400`}>
-            <div className={`max-w-[85%] p-4 rounded-2xl shadow-xl relative transition-all ${msg.role === 'user' ? (theme === 'dark' ? 'bg-white/5 border border-white/5' : 'bg-gray-50 border-gray-200 border') : (theme === 'dark' ? 'bg-black/30 border border-white/5' : 'bg-white border-gray-100')}`}>
-              {msg.attachments?.map((att, i) => (
-                <img key={i} src={att.data} className={`w-full rounded-xl mb-4 border border-white/5 shadow-2xl ${msg.isImage ? 'h-auto max-h-[250px]' : 'h-32 object-cover'}`} />
-              ))}
               
-              <div className={`bot-message text-[14.5px] leading-relaxed ${msg.role === 'assistant' ? '' : 'font-medium opacity-90'}`} 
-                   dangerouslySetInnerHTML={{ __html: msg.content }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-4">
+                {ELECTRICAL_TEMPLATES.map((tmpl, idx) => (
+                  <button key={idx} onClick={() => handleSendMessage(tmpl)} className={`text-left p-4 rounded-2xl border transition-all hover:bg-white/5 active:scale-[0.98] group ${theme === 'dark' ? 'bg-white/5 border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
+                    <div className="flex items-center gap-4">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-black shadow-inner" style={{ color: activeColor.hex }}>⚡</div>
+                      <span className="font-medium text-[13px] opacity-70 group-hover:opacity-100 transition-opacity">{tmpl}</span>
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
-        ))}
+          )}
+
+          {messages.map((msg) => (
+            <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} animate-in fade-in slide-in-from-bottom-2 duration-400`}>
+              <div className={`max-w-[85%] p-4 rounded-2xl shadow-xl relative transition-all ${msg.role === 'user' ? (theme === 'dark' ? 'bg-white/5 border border-white/5' : 'bg-gray-50 border-gray-200 border') : (theme === 'dark' ? 'bg-black/30 border border-white/5' : 'bg-white border-gray-100')}`}>
+                {msg.attachments?.map((att, i) => (
+                  <img key={i} src={att.data} className={`w-full rounded-xl mb-4 border border-white/5 shadow-2xl ${msg.isImage ? 'h-auto max-h-[250px]' : 'h-32 object-cover'}`} />
+                ))}
+                
+                <div className={`bot-message text-[14.5px] leading-relaxed ${msg.role === 'assistant' ? '' : 'font-medium opacity-90'}`} 
+                     dangerouslySetInnerHTML={{ __html: msg.content }}>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </main>
 
       {/* Input Module with GOD BUTTON */}
-      <div className={`relative z-30 px-6 pt-2 pb-12 transition-all`}>
-        <div className={`flex items-center gap-4 p-1 rounded-[1.5rem] transition-all duration-500 input-container ${theme === 'dark' ? 'bg-black/60' : 'bg-white shadow-xl'}`}>
-          <button onClick={() => fileInputRef.current?.click()} className="p-3 transition-all opacity-40 hover:opacity-100 hover:rotate-12" style={{ color: activeColor.hex }}>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" strokeWidth={1.5}/></svg>
-            <input type="file" ref={fileInputRef} onChange={(e) => {
-               const f = e.target.files?.[0];
-               if(f) { const r = new FileReader(); r.onloadend = () => setPendingAttachments(p => [...p, { data: r.result as string, mimeType: f.type }]); r.readAsDataURL(f); }
-            }} hidden />
-          </button>
+      <div className={`relative z-30 w-full pt-2 pb-12 transition-all`}>
+        <div className="max-w-3xl mx-auto px-6">
+          <div className={`flex items-center gap-4 p-1 rounded-[1.5rem] transition-all duration-500 input-container ${theme === 'dark' ? 'bg-black/60' : 'bg-white shadow-xl'}`}>
+            <button onClick={() => fileInputRef.current?.click()} className="p-3 transition-all opacity-40 hover:opacity-100 hover:rotate-12" style={{ color: activeColor.hex }}>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" strokeWidth={1.5}/></svg>
+              <input type="file" ref={fileInputRef} onChange={(e) => {
+                 const f = e.target.files?.[0];
+                 if(f) { const r = new FileReader(); r.onloadend = () => setPendingAttachments(p => [...p, { data: r.result as string, mimeType: f.type }]); r.readAsDataURL(f); }
+              }} hidden />
+            </button>
 
-          <input 
-            value={inputValue} 
-            onChange={e => setInputValue(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
-            placeholder={t.inputHint}
-            className={`flex-1 py-2 bg-transparent text-[14px] outline-none placeholder:opacity-20 font-medium ${theme === 'dark' ? 'text-white' : 'text-black'}`}
-          />
+            <input 
+              value={inputValue} 
+              onChange={e => setInputValue(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
+              placeholder={t.inputHint}
+              className={`flex-1 py-2 bg-transparent text-[14px] outline-none placeholder:opacity-20 font-medium ${theme === 'dark' ? 'text-white' : 'text-black'}`}
+            />
 
-          {/* THE GOD BUTTON */}
-          <button 
-            onClick={() => handleSendMessage()}
-            className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all duration-300 group shadow-lg active:scale-95 god-button mr-1`}
-            style={{ 
-              boxShadow: `0 0 20px ${activeColor.shadow}`,
-              background: `linear-gradient(135deg, ${activeColor.hex}, #fff)`
-            }}
-            disabled={status === AppStatus.THINKING}
-          >
-            {status === AppStatus.THINKING ? (
-               <div className="relative w-6 h-6 flex items-center justify-center">
-                 <div className="absolute inset-0 border-2 border-black/30 rounded-full"></div>
-                 <div className="absolute inset-0 border-2 border-t-black rounded-full animate-spin"></div>
-               </div>
-            ) : (
-               <div className="relative flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  {/* Energy Sparkle */}
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping opacity-70"></div>
-               </div>
-            )}
-          </button>
+            {/* THE GOD BUTTON */}
+            <button 
+              onClick={() => handleSendMessage()}
+              className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all duration-300 group shadow-lg active:scale-95 god-button mr-1`}
+              style={{ 
+                boxShadow: `0 0 20px ${activeColor.shadow}`,
+                background: `linear-gradient(135deg, ${activeColor.hex}, #fff)`
+              }}
+              disabled={status === AppStatus.THINKING}
+            >
+              {status === AppStatus.THINKING ? (
+                 <div className="relative w-6 h-6 flex items-center justify-center">
+                   <div className="absolute inset-0 border-2 border-black/30 rounded-full"></div>
+                   <div className="absolute inset-0 border-2 border-t-black rounded-full animate-spin"></div>
+                 </div>
+              ) : (
+                 <div className="relative flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    {/* Energy Sparkle */}
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping opacity-70"></div>
+                 </div>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className={`absolute bottom-0 left-0 w-full z-40 px-6 py-2 flex items-center justify-between border-t transition-all ${theme === 'dark' ? 'bg-black border-white/5' : 'bg-white border-gray-100'}`}>
-         <div className="flex items-center gap-2.5 opacity-30 hover:opacity-100 transition-opacity">
-            <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: activeColor.hex, boxShadow: `0 0 8px ${activeColor.hex}` }}></div>
-            <span className="text-[7.5px] font-bold tracking-[0.4em] uppercase">{t.created}</span>
-         </div>
-         <div className="flex items-center gap-3">
-            <div className="text-[6.5px] font-bold tracking-[0.3em] opacity-15 uppercase font-futuristic">Core X9.0</div>
-            <a 
-                href="https://www.facebook.com/share/1HnU5FCMGs/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="opacity-20 hover:opacity-100 transition-all hover:scale-110"
-                style={{ color: activeColor.hex }}
-            >
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
+      <footer className={`absolute bottom-0 left-0 w-full z-40 border-t transition-all ${theme === 'dark' ? 'bg-black border-white/5' : 'bg-white border-gray-100'}`}>
+         <div className="max-w-3xl mx-auto px-6 py-2 flex items-center justify-between">
+           <div className="flex items-center gap-2.5 opacity-30 hover:opacity-100 transition-opacity">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: activeColor.hex, boxShadow: `0 0 8px ${activeColor.hex}` }}></div>
+              <span className="text-[7.5px] font-bold tracking-[0.4em] uppercase">{t.created}</span>
+           </div>
+           <div className="flex items-center gap-3">
+              <div className="text-[6.5px] font-bold tracking-[0.3em] opacity-15 uppercase font-futuristic">Core X9.0</div>
+              <a 
+                  href="https://www.facebook.com/share/1HnU5FCMGs/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="opacity-20 hover:opacity-100 transition-all hover:scale-110"
+                  style={{ color: activeColor.hex }}
+              >
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+           </div>
          </div>
       </footer>
 
